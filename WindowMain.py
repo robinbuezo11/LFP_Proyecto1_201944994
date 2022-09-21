@@ -6,7 +6,7 @@ class WindowMain(ttk.Frame):
     def __init__(self, master) -> None:
         super().__init__(master)
         master.title('Proyecto 1')
-        master.geometry('700x550')
+        master.geometry('800x700')
         master.config(background='sky blue')
         master.resizable(False,False)
 
@@ -30,6 +30,9 @@ class WindowMain(ttk.Frame):
         menuhelp.add_command(label='Temas de Ayuda', command=self.__open)
 
         master.config(menu=menu)
+
+        entrytext = ttk.Entry(master=master)
+        entrytext.place(x=20, y=20, width=760, height=660)
 
     def __open(self):
         msgbx.showinfo('Info','Has presionado el boton de abrir')
