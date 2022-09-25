@@ -30,7 +30,7 @@ class ManagerFile:
     def save(self,data,saveas=False):
         try:
             if saveas:
-                file = asksaveasfile(title='Guardar como',defaultextension='.txt', filetypes=[('Todos','*.*')],mode='w')
+                file = asksaveasfile(title='Guardar como',defaultextension='.txt',filetypes=[('Todos','*.*')],mode='w')
             else:
                 file = open(self.__path,'w', encoding='utf-8')
             file.write(data)

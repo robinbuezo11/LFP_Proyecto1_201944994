@@ -21,16 +21,16 @@ class WindowMain(ttk.Frame):
         self.__menufile.add_command(label='Abrir', command=self.__open)
         self.__menufile.add_command(label='Guardar', command=self.__save)
         self.__menufile.add_command(label='Guardar Como', command=self.__saveAs)
-        self.__menufile.add_command(label='Analizar', command=self.__open)
-        self.__menufile.add_command(label='Errores', command=self.__open)
+        self.__menufile.add_command(label='Analizar', command=self.__analyze)
+        self.__menufile.add_command(label='Errores', command=self.__errors)
         self.__menufile.add_command(label='Salir', command=self.__exit)
 
         self.__menuhelp = tk.Menu(self.__menu, tearoff=False)
         self.__menu.add_cascade(menu=self.__menuhelp, label='Ayuda')
 
-        self.__menuhelp.add_command(label='Manual Técnico', command=self.__open)
-        self.__menuhelp.add_command(label='Manual de Usuario', command=self.__open)
-        self.__menuhelp.add_command(label='Temas de Ayuda', command=self.__open)
+        self.__menuhelp.add_command(label='Manual Técnico', command=self.__tecmanual)
+        self.__menuhelp.add_command(label='Manual de Usuario', command=self.__usermanual)
+        self.__menuhelp.add_command(label='Temas de Ayuda', command=self.__help)
 
         master.config(menu=self.__menu)
 
@@ -44,13 +44,13 @@ class WindowMain(ttk.Frame):
             for line in self.__mfile.getData():
                 self.__entrytext.insert('end', line)
         except Exception as e:
-            print(msgbx.showerror('Error',e))
+            msgbx.showerror('Error',e)
 
     def __save(self):
         try:
             self.__mfile.save(self.__entrytext.get(1.0,'end'))
         except Exception as e:
-            print(msgbx.showerror('Error',e))
+            msgbx.showerror('Error',e)
 
     def __saveAs(self):
         try:
@@ -59,7 +59,22 @@ class WindowMain(ttk.Frame):
             for line in self.__mfile.getData():
                 self.__entrytext.insert('end', line)
         except Exception as e:
-            print(msgbx.showerror('Error',e))
+            msgbx.showerror('Error',e)
+
+    def __analyze(self):
+            msgbx.showinfo(message='Boton Analizar')
+
+    def __errors(self):
+        msgbx.showinfo(message='Boton Errores')
+
+    def __usermanual(self):
+        msgbx.showinfo(message='Boton Manual Usuario')
+
+    def __tecmanual(self):
+        msgbx.showinfo(message='Boton Manual Tecnico')
+
+    def __help(self):
+        msgbx.showinfo('Ayuda','Desarrollador: Robin Omar Buezo Díaz\nCarne: 201944994\nCurso: Lenguajes Formales y De Programacion')
 
     def __exit(self):
         self.master.destroy()
