@@ -62,7 +62,10 @@ class WindowMain(ttk.Frame):
             msgbx.showerror('Error',e)
 
     def __analyze(self):
-            msgbx.showinfo(message='Boton Analizar')
+            try:
+                self.__mfile.analyzeText(self.__entrytext.get(1.0,'end'))
+            except Exception as e:
+                msgbx.showerror('Error',e)
 
     def __errors(self):
         msgbx.showinfo(message='Boton Errores')

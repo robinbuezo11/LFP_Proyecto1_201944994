@@ -12,7 +12,7 @@ class ManagerFile:
     def openFile(self):   #Metodo para leer el archivo
         try:
             path = askopenfilename()
-            file = open(path,'r', encoding='utf-8')
+            file = open(path,'r')
             self.__path = path
             if file is not None:
                 self.__data = file.readlines()
@@ -23,9 +23,20 @@ class ManagerFile:
                 file.close()
             msgbx.showerror("ERROR",'Error en la carga, revise que los datos y la ruta de su archivo sean correctos.')
 
-    def analyzeText(self, filelines=[]):     #Metodo para analizar el archivo
+    def analyzeText(self,text=None):     #Metodo para analizar el archivo
         dfa = DFA()
-        dfa.analyze(filelines)
+        text = text.split('\n')
+        iterator = 0
+        if text is None:
+            dfa.analyze(self.__data)
+        else:
+            for line in text:
+                text[iterator] = line + '\n'
+                iterator += 1
+            dfa.analyze(text)
+        print(dfa.getErrors())
+        print('----------------------------------------------------')
+        print(dfa.getTokens())
 
     def save(self,data,saveas=False):
         try:

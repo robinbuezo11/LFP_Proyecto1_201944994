@@ -3,88 +3,165 @@ class DFA:
     def __init__(self,text=[]) -> None:
         self.__text = text
         self.__status = 0
+        self.__errors =[]
+        self.__tokens =[]
+        self.__row = 1
+        self.__column = 1
+        self.__lexeme = ''
 
     def analyze(self, text=[]):
         if text == []:
             text = self.__text
-        errors =[]
-        row = 1
-        column = 1
+
+        self.__errors =[]
+        self.__tokens =[]
+        self.__row = 1
 
         for line in text:
-            column = 1
             self.__status = 0
+            self.__column = 1
             for char in line:
                 if self.__status == 0:
-                    self.__status0(char=char)
+                    self.__status0(char)
                 elif self.__status == 1:
-                    self.__status1(char=char)
+                    self.__status1(char)
                 elif self.__status == 2:
-                    self.__status2(char=char)
+                    self.__status2(char)
                 elif self.__status == 3:
-                    self.__status3(char=char)
+                    self.__status3(char)
                 elif self.__status == 4:
-                    self.__status4(char=char)
+                    self.__status4(char)
                 elif self.__status == 5:
-                    self.__status5(char=char)
+                    self.__status5(char)
                 elif self.__status == 6:
-                    self.__status6(char=char)
+                    self.__status6(char)
                 elif self.__status == 7:
-                    self.__status7(char=char)
+                    self.__status7(char)
                 elif self.__status == 8:
-                    self.__status8(char=char)
+                    self.__status8(char)
                 elif self.__status == 9:
-                    self.__status9(char=char)
+                    self.__status9(char)
                 elif self.__status == 10:
-                    self.__status10(char=char)
+                    self.__status10(char)
                 elif self.__status == 11:
-                    self.__status11(char=char)
+                    self.__status11(char)
                 elif self.__status == 12:
-                    self.__status12(char=char)    
-                column+=1
-            row +=1
+                    self.__status12(char)    
+                self.__column+=1
+            self.__row +=1
             
     def __status0(self, char):
-        pass
+        self.__lexeme = ''
+        if char == '<':
+            self.__status = 1
+            self.__lexeme += char
+        elif str.isalpha(char):
+            self.__status = 3
+            self.__lexeme += char
+        elif char == '=':
+            self.__status = 4
+            self.__lexeme += char
+        elif str.isdigit(char):
+            self.__status = 5
+            self.__lexeme += char
+        elif char == '>':
+            self.__status = 6
+            self.__lexeme += char
+        elif char == ',':
+            self.__status = 7
+            self.__lexeme += char
+        elif char == '.':
+            self.__status = 8
+            self.__lexeme += char
+        elif char == '[':
+            self.__status = 9
+            self.__lexeme += char
+        elif char == ']':
+            self.__status = 10
+            self.__lexeme += char
+        elif char == ' ' or char == '\n' or char == '\t':
+            self.__status = 0
+        else: 
+            self.__errors.append([char,self.__row,self.__column])
+        
 
     def __status1(self, char):
-        pass
+        if char == '/':
+            self.__lexeme += char
+            self.__status2()
+        else:
+            self.__tokens.append(['Apertura',self.__lexeme])
+            self.__status0(char)
 
-    def __status2(self, char):
-        pass
+    def __status2(self):
+        self.__tokens.append(['Apertura',self.__lexeme])
+        self.__status = 0
 
     def __status3(self, char):
-        pass
+        if str.isalpha(char):
+            self.__lexeme += char
+        else:
+            self.__tokens.append(['Identificador',self.__lexeme])
+            self.__status0(char)
 
     def __status4(self, char):
-        pass
+        self.__tokens.append(['Igual',self.__lexeme])
+        self.__status0(char)
 
     def __status5(self, char):
-        pass
+        if str.isdigit(char):
+            self.__lexeme += char
+        if char == '.':
+            self.__lexeme += char
+            self.__status = 11
+        else:
+            self.__tokens.append(['Numero',self.__lexeme])
+            self.__status0(char)
 
     def __status6(self, char):
-        pass
+        self.__tokens.append(['Cierre',self.__lexeme])
+        self.__status0(char)
 
     def __status7(self, char):
-        pass
+        self.__tokens.append(['Coma',self.__lexeme])
+        self.__status0(char)
 
     def __status8(self, char):
-        pass
+        self.__tokens.append(['Punto',self.__lexeme])
+        self.__status0(char)
 
     def __status9(self, char):
-        pass
+        self.__tokens.append(['CorcheteA',self.__lexeme])
+        self.__status0(char)
 
     def __status10(self, char):
-        pass
+        self.__tokens.append(['CorcheteC',self.__lexeme])
+        self.__status0(char)
 
     def __status11(self, char):
-        pass
+        if str.isdigit(char):
+            self.__lexeme += char
+            self.__status = 12
+        else:
+            self.__status = 0
+            self.__errors.append([char,self.__row,self.__column])
+            self.__status0(char)
 
     def __status12(self, char):
-        pass
+        if str.isdigit(char):
+            self.__lexeme += char
+        else:
+            self.__tokens.append(['Numero',self.__lexeme])
+            self.__status0(char)           
 
     def getText(self):
         return self.__text
 
     def setText(self, text):
         self.__text = text
+
+    def getErrors(self):
+        return self.__errors
+
+    def getTokens(self):
+        return self.__tokens
