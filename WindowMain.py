@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox as msgbx
 from tkinter.filedialog import askopenfilename, asksaveasfile
 from ManagerFile import ManagerFile
+from Html import Html
 
 class WindowMain(ttk.Frame):
     def __init__(self, master, mfile=ManagerFile()) -> None:
@@ -12,6 +13,7 @@ class WindowMain(ttk.Frame):
         master.config(background='sky blue')
         master.resizable(False,False)
         self.__mfile = mfile
+        self.__html = Html()
 
         self.__menu = tk.Menu()
 
@@ -63,12 +65,18 @@ class WindowMain(ttk.Frame):
 
     def __analyze(self):
             try:
-                self.__mfile.analyzeText(self.__entrytext.get(1.0,'end'))
+                (errors,tokens) = self.__mfile.analyzeText(self.__entrytext.get(1.0,'end'))
+                self.__html = Html(errors=errors,tokens=tokens)
+                msgbx.showinfo('Archivo Analizado','El archivo se analizó correctamente, puede revisar los resultados')
             except Exception as e:
                 msgbx.showerror('Error',e)
 
     def __errors(self):
-        msgbx.showinfo(message='Boton Errores')
+        try:
+            self.__html.generateErrors()
+            msgbx.showinfo('Archivo generado','Archivo de errores generado exitosamente')
+        except Exception as e:
+            msgbx.showerror('Error',e)
 
     def __usermanual(self):
         msgbx.showinfo(message='Boton Manual Usuario')

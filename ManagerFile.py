@@ -12,7 +12,7 @@ class ManagerFile:
     def openFile(self):   #Metodo para leer el archivo
         try:
             path = askopenfilename()
-            file = open(path,'r')
+            file = open(path,'r',encoding='utf-8')
             self.__path = path
             if file is not None:
                 self.__data = file.readlines()
@@ -37,6 +37,7 @@ class ManagerFile:
         print(dfa.getErrors())
         print('----------------------------------------------------')
         print(dfa.getTokens())
+        return (dfa.getErrors(),dfa.getTokens())
 
     def save(self,data,saveas=False):
         try:

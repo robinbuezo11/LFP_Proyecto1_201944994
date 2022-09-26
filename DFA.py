@@ -46,7 +46,9 @@ class DFA:
                 elif self.__status == 11:
                     self.__status11(char)
                 elif self.__status == 12:
-                    self.__status12(char)    
+                    self.__status12(char)
+                elif self.__status == 13:
+                    self.__status13(char)    
                 self.__column+=1
             self.__row +=1
             
@@ -64,7 +66,7 @@ class DFA:
         elif str.isdigit(char):
             self.__status = 5
             self.__lexeme += char
-        elif char == '>':
+        elif char == '/':
             self.__status = 6
             self.__lexeme += char
         elif char == ',':
@@ -78,6 +80,9 @@ class DFA:
             self.__lexeme += char
         elif char == ']':
             self.__status = 10
+            self.__lexeme += char
+        elif char == '>':
+            self.__status = 13
             self.__lexeme += char
         elif char == ' ' or char == '\n' or char == '\t':
             self.__status = 0
@@ -101,7 +106,7 @@ class DFA:
         if str.isalpha(char):
             self.__lexeme += char
         else:
-            self.__tokens.append(['Identificador',self.__lexeme])
+            self.__tokens.append(['Palabra',self.__lexeme])
             self.__status0(char)
 
     def __status4(self, char):
@@ -119,8 +124,13 @@ class DFA:
             self.__status0(char)
 
     def __status6(self, char):
-        self.__tokens.append(['Cierre',self.__lexeme])
-        self.__status0(char)
+        if char == '>':
+            self.__lexeme += char
+            self.__status = 13
+        else:
+            self.__status = 0
+            self.__errors.append([char,self.__row,self.__column])
+            self.__status0(char)
 
     def __status7(self, char):
         self.__tokens.append(['Coma',self.__lexeme])
@@ -152,7 +162,11 @@ class DFA:
             self.__lexeme += char
         else:
             self.__tokens.append(['Numero',self.__lexeme])
-            self.__status0(char)           
+            self.__status0(char)   
+
+    def __status13(self, char):
+        self.__tokens.append(['Cierre',self.__lexeme])
+        self.__status0(char)      
 
     def getText(self):
         return self.__text
