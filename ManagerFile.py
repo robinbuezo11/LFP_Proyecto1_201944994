@@ -34,9 +34,9 @@ class ManagerFile:
                 text[iterator] = line + '\n'
                 iterator += 1
             dfa.analyze(text)
-        print(dfa.getErrors())
-        print('----------------------------------------------------')
-        print(dfa.getTokens())
+        #print(dfa.getErrors())
+        #print('----------------------------------------------------')
+        #print(dfa.getTokens())
         return (dfa.getErrors(),dfa.getTokens())
 
     def save(self,data,saveas=False):

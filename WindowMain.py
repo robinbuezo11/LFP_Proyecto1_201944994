@@ -67,6 +67,7 @@ class WindowMain(ttk.Frame):
             try:
                 (errors,tokens) = self.__mfile.analyzeText(self.__entrytext.get(1.0,'end'))
                 self.__html = Html(errors=errors,tokens=tokens)
+                self.__html.generateResults()
                 msgbx.showinfo('Archivo Analizado','El archivo se analizó correctamente, puede revisar los resultados')
             except Exception as e:
                 msgbx.showerror('Error',e)

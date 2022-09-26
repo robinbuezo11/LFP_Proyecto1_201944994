@@ -116,7 +116,7 @@ class DFA:
     def __status5(self, char):
         if str.isdigit(char):
             self.__lexeme += char
-        if char == '.':
+        elif char == '.':
             self.__lexeme += char
             self.__status = 11
         else:
